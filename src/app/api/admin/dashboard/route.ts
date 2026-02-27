@@ -11,7 +11,7 @@ export async function GET() {
         // 1. Get all orders to calculate revenue and pending fulfillments
         const { data: orders, error: ordersError } = await supabase
             .from('orders')
-            .select('amount, status, created_at');
+            .select('amount, status, tracking_id, created_at');
 
         // 2. Get count of products out of stock
         const { count: lowStockCount, error: stockError } = await supabase
