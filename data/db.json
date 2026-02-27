@@ -1,0 +1,90 @@
+{
+  "products": [
+    {
+      "id": "prod_1",
+      "title": "iPhone 15 Pro",
+      "price": 134900,
+      "storage": "256GB",
+      "condition": "New",
+      "batteryHealth": "100%",
+      "images": [
+        "/placeholder-iphone.jpg"
+      ],
+      "description": "Forged in titanium and featuring the groundbreaking A17 Pro chip.",
+      "isSold": false,
+      "createdAt": "2023-10-01T10:00:00Z"
+    },
+    {
+      "id": "prod_2",
+      "title": "iPhone 14",
+      "price": 69900,
+      "storage": "128GB",
+      "condition": "Excellent",
+      "batteryHealth": "95%",
+      "images": [
+        "/placeholder-iphone.jpg"
+      ],
+      "description": "A total powerhouse. With an upgraded camera and the A15 Bionic chip.",
+      "isSold": false,
+      "createdAt": "2023-11-15T14:30:00Z"
+    },
+    {
+      "id": "prod_3",
+      "title": "MacBook Air M2",
+      "price": 114900,
+      "storage": "512GB",
+      "condition": "New",
+      "batteryHealth": "100%",
+      "images": [
+        "/placeholder-macbook.jpg"
+      ],
+      "description": "Supercharged by M2. Strikingly thin and fast.",
+      "isSold": false,
+      "createdAt": "2024-01-10T09:15:00Z"
+    },
+    {
+      "id": "prod_4",
+      "title": "AirPods Pro (2nd Gen)",
+      "price": 24900,
+      "storage": "N/A",
+      "condition": "New",
+      "batteryHealth": "100%",
+      "images": [
+        "/placeholder-airpods.jpg"
+      ],
+      "description": "Re-engineered for richer audio. Next-level active noise cancellation.",
+      "isSold": false,
+      "createdAt": "2024-02-05T11:20:00Z"
+    },
+    {
+      "title": "Rog phone 6pro",
+      "price": 21000,
+      "storage": "512",
+      "condition": "Good",
+      "batteryHealth": "good",
+      "description": "used phone",
+      "images": [
+        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTPgoUAzZXMeZmiHTUYn9W7w_pno28znxbv1ONKZscX_KLSZagTC7RVCaKZimqspLpXZY94Oh92vKU2OUZCsl8_gVmUDRXabNrSCi_N15jIhMokOz3ECy2sepw"
+      ],
+      "id": "prod_1771561776181",
+      "createdAt": "2026-02-20T04:29:36.181Z",
+      "isSold": false
+    },
+    {
+      "title": "redmi note 7 pro",
+      "price": 9000,
+      "storage": "123",
+      "condition": "Like New",
+      "batteryHealth": "Good",
+      "timeUsed": "4 years",
+      "description": ".",
+      "images": [
+        "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1551087903.93143860!400x400!85.jpg"
+      ],
+      "id": "prod_1771565513225",
+      "createdAt": "2026-02-20T05:31:53.225Z",
+      "isSold": false
+    }
+  ],
+  "orders": []
+}
