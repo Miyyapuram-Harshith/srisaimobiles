@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Loader2, IndianRupee, ShoppingBag, AlertTriangle, TrendingUp, ArrowRight } from "lucide-react";
+import { Loader2, IndianRupee, ShoppingBag, AlertTriangle, TrendingUp, ArrowRight, Megaphone } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -134,7 +134,7 @@ export default function AdminDashboardPage() {
             {/* Quick Actions Shortcuts */}
             <div className="pt-4">
                 <h2 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white mb-4">Quick Shortcuts</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                     <Link href="/admin/add-product" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-black dark:hover:border-white transition-colors flex flex-col items-center justify-center text-center gap-2 group">
                         <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors">
                             <ShoppingBag className="w-5 h-5" />
@@ -161,6 +161,14 @@ export default function AdminDashboardPage() {
                             <IndianRupee className="w-5 h-5" />
                         </div>
                         <span className="text-sm font-semibold">Manage Staff</span>
+                    </Link>
+
+                    <Link href="/admin/settings" className="p-4 rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-950/20 hover:border-purple-500 dark:hover:border-purple-400 transition-colors flex flex-col items-center justify-center text-center gap-2 group">
+                        <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white dark:group-hover:bg-purple-500 transition-colors text-purple-600 dark:text-purple-400">
+                            <Megaphone className="w-5 h-5" />
+                        </div>
+                        <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Marquee Settings</span>
+                        <span className="text-[11px] text-purple-400 dark:text-purple-500 leading-tight">Speed · Style · Link</span>
                     </Link>
                 </div>
             </div>

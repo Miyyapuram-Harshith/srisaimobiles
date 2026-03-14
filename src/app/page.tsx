@@ -2,7 +2,9 @@ import React from 'react';
 import { createClient } from '@supabase/supabase-js';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
-import { ArrowRight, Smartphone, ShieldCheck, Zap, User } from 'lucide-react';
+import { ArrowRight, Smartphone, ShieldCheck } from 'lucide-react';
+import Navbar from '@/components/ui/Navbar';
+import HomeSlideshow from '@/components/HomeSlideshow';
 
 export const revalidate = 60; // SSR Cache invalidation for fast data
 
@@ -31,46 +33,13 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50/30 dark:bg-gray-950 pb-20">
 
-      {/* 1. Mobile-Optimized Hero Section */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 dark:from-blue-900 dark:to-gray-900 text-white">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+      {/* 1. Top Navigation Bar — Logo + SRISAIMOBILES + Search */}
+      <Navbar />
 
-        {/* Login Link */}
-        <div className="absolute top-4 right-4 z-20">
-          <Link href="/login" className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-sm font-medium transition-all text-white/90">
-            <User size={16} />
-            <span className="hidden sm:inline">Login</span>
-          </Link>
-        </div>
+      {/* 2. Slideshow Banner */}
+      <HomeSlideshow />
 
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10 flex flex-col items-center text-center">
-
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/30 border border-blue-400/30 backdrop-blur-sm text-xs font-bold uppercase tracking-widest mb-6">
-            <Zap size={14} className="text-yellow-400" />
-            Sri Sai Mobiles
-          </span>
-
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
-            Premium Devices.<br />
-            <span className="text-blue-200">Unbeatable Prices.</span>
-          </h1>
-
-          <p className="max-w-xl text-blue-100 text-base md:text-lg mb-8 opacity-90">
-            Buy, Sell, or Exchange your smartphone securely. 100% verified devices with trusted quality checks.
-          </p>
-
-          <div className="flex gap-4">
-            <Link href="/products" className="bg-white text-blue-900 font-bold px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
-              Shop Now
-            </Link>
-            <Link href="/contact" className="bg-blue-700/50 backdrop-blur-md border border-blue-500/50 text-white font-bold px-8 py-3.5 rounded-full hover:bg-blue-600/50 transition-all">
-              Sell to Us
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Banner - Below Hero */}
+      {/* Trust Banner - Below Slideshow */}
       <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-center gap-6 md:gap-12 opacity-80">
           <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -98,7 +67,7 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* 2. The Strict 2-Column Mobile Grid! */}
+        {/* 2-Column Mobile Grid */}
         {products.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (

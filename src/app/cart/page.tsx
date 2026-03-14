@@ -10,14 +10,14 @@ export default async function CartPage() {
     return (
         <>
             <Navbar />
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
                 <h1 className="text-4xl font-semibold tracking-tight text-apple-text mb-12 text-center">
                     Review your bag.
                 </h1>
 
                 {product ? (
-                    <div className="flex flex-col md:flex-row gap-12 items-start border-b border-apple-border pb-12 mb-12">
-                        <div className="w-full md:w-1/4 bg-apple-card rounded-xl p-4 aspect-square flex items-center justify-center">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-start border-b border-apple-border pb-6 sm:pb-10 mb-6 sm:mb-10">
+                        <div className="w-28 sm:w-1/4 bg-apple-card rounded-xl p-3 aspect-square flex items-center justify-center flex-shrink-0">
                             {product.images?.[0] ? <img src={product.images[0]} alt={product.title} className="max-w-full max-h-full mix-blend-multiply" /> : <div className="text-xs text-apple-text-secondary">No image</div>}
                         </div>
 
@@ -48,7 +48,7 @@ export default async function CartPage() {
                         </div>
 
                         <div className="mt-8 flex justify-end">
-                            <Link href="/checkout" className="w-full sm:w-auto text-center px-12 py-4 bg-apple-blue text-white rounded-xl font-medium hover:bg-apple-blue-hover transition duration-300">
+                            <Link href="/checkout" className="w-full text-center px-8 py-3.5 bg-apple-blue text-white rounded-xl font-medium hover:bg-apple-blue-hover transition duration-300 active:scale-[0.98]">
                                 Check Out
                             </Link>
                         </div>

@@ -1,0 +1,23 @@
+{
+  "marquee": {
+    "active": true,
+    "text": "🎉 Grand Diwali Sale Extravaganza! Flat 50% Off on iPhones.",
+    "link": "/products",
+    "color": "#ffffff",
+    "fontFamily": "sans-serif",
+    "backgroundColor": "#000000",
+    "speed": 54,
+    "direction": "right",
+    "fontSize": "16px",
+    "fontWeight": "bold",
+    "fontStyle": "normal",
+    "pauseOnHover": true,
+    "repeatCount": 1,
+    "letterSpacing": "normal",
+    "borderBottom": "",
+    "borderTop": "",
+    "textShadow": "0 0 8px rgba(255,255,255,0.6)",
+    "barHeight": "40px",
+    "opacity": 0.55
+  }
+}

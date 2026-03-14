@@ -71,7 +71,7 @@ export default function LoginPage() {
         setError("");
         setIsLoading(true);
 
-        const cleanIdentifier = identifier.trim();
+        const cleanIdentifier = identifier.trim().toLowerCase();
 
         try {
             if (authType === "phone") {

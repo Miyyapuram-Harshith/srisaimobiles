@@ -39,7 +39,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
     const isUsed = product.condition === 'Used';
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-950 pb-24 md:pb-12 text-sm text-gray-500">
+        <div className="min-h-screen bg-white dark:bg-gray-950 pb-32 md:pb-12 text-sm text-gray-500">
             {/* Top Navigation */}
             <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </div>
             </nav>
 
-            <main className="max-w-7xl mx-auto px-4 py-6 md:py-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 relative">
+            <main className="max-w-7xl mx-auto px-4 py-3 md:py-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 relative">
 
                 {/* Left Column: Image Gallery (Client Component) */}
                 <div className="w-full">

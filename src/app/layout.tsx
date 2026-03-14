@@ -3,6 +3,8 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "sonner";
+import AnnouncementMarquee from "@/components/AnnouncementMarqueeServer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 export const metadata: Metadata = {
   title: "SriSaiMobiles Retail",
@@ -16,7 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased selection:bg-apple-blue selection:text-white pb-20 md:pb-0">
+      {/* pb-16 on mobile leaves room for bottom nav; no extra padding on md+ */}
+      <body className="antialiased selection:bg-apple-blue selection:text-white pb-16 md:pb-0">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -24,8 +27,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen flex flex-col">
+            <AnnouncementMarquee />
             {children}
           </main>
+          <MobileBottomNav />
           <Toaster richColors position="top-center" />
         </ThemeProvider>
       </body>

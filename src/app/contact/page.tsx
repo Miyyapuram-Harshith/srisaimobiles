@@ -8,13 +8,16 @@ export default function ContactPage() {
 
             {/* Simple Header */}
             <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-4 py-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <Link href="/" className="p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
-                        <ArrowLeft size={24} />
-                    </Link>
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                        Contact & Location
-                    </span>
+                <div className="w-full mx-auto flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Link href="/" className="p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors mr-2">
+                            <ArrowLeft size={24} />
+                        </Link>
+                        <img src="/logo.png" alt="SriSaiMobiles Logo" className="h-8 sm:h-10 w-auto mix-blend-multiply dark:mix-blend-normal drop-shadow-sm" />
+                        <span className="font-bold text-lg sm:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">
+                            Sri Sai Mobiles
+                        </span>
+                    </div>
                     <Link href="/login" className="p-2 -mr-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors flex-shrink-0">
                         <User size={24} />
                     </Link>

@@ -1,10 +1,11 @@
 "use client";
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { productSchema, ProductFormValues } from '@/lib/validations/product';
-import React, { useState } from 'react';
+import React from 'react';
+import { Plus, Trash2 } from 'lucide-react';
 
 export default function AddProductPage() {
     const {
@@ -12,6 +13,7 @@ export default function AddProductPage() {
         handleSubmit,
         watch,
         control,
+        setValue,
         formState: { errors, isSubmitting },
     } = useForm<ProductFormValues>({
         resolver: zodResolver(productSchema) as any,
@@ -25,6 +27,18 @@ export default function AddProductPage() {
             trueToneWorking: true,
         }
     });
+
+    const images = watch('images') || [];
+    
+    const appendImage = (url: string) => {
+        setValue('images', [...images, url]);
+    };
+    
+    const removeImage = (index: number) => {
+        const newImages = [...images];
+        newImages.splice(index, 1);
+        setValue('images', newImages);
+    };
 
     // Watch critical fields to conditionally render UI
     const category = watch('category');
@@ -238,6 +252,128 @@ export default function AddProductPage() {
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Description</label>
                         <textarea {...register('description')} rows={4} className="w-full rounded-lg border-gray-300 bg-gray-50 dark:bg-gray-900 dark:border-gray-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Extensive product description..."></textarea>
                         {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
+                    </div>
+
+                    {/* Section 4: Image URLs */}
+                    <div className="pb-8 border-b border-gray-100 dark:border-gray-700">
+                        <div className="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Product Images</h3>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Select one or more images from your device. They will be uploaded automatically.</p>
+                            </div>
+                        </div>
+                        
+                        {errors.images && <p className="text-red-500 text-xs mb-4">{errors.images.message}</p>}
+
+                        <div className="space-y-4">
+                            <div className="flex flex-col gap-2">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Upload Local Images</label>
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={async (e) => {
+                                        const files = e.target.files;
+                                        if (!files || files.length === 0) return;
+
+                                        // We upload files one by one (or concurrently) and append URLs
+                                        for (let i = 0; i < files.length; i++) {
+                                            const file = files[i];
+                                            const formData = new FormData();
+                                            formData.append('file', file);
+
+                                            try {
+                                                const res = await fetch('/api/upload', {
+                                                    method: 'POST',
+                                                    body: formData,
+                                                });
+                                                if (res.ok) {
+                                                    const data = await res.json();
+                                                    appendImage(data.url); // Add the returned local URL to the form state
+                                                } else {
+                                                    console.error("Failed to upload:", file.name);
+                                                    alert(`Failed to upload ${file.name}`);
+                                                }
+                                            } catch (err) {
+                                                console.error("Network error uploading:", err);
+                                            }
+                                        }
+                                        
+                                        // Reset file input so the same file could be selected again if needed
+                                        e.target.value = '';
+                                    }}
+                                    className="block w-full text-sm text-gray-500 dark:text-gray-400
+                                      file:mr-4 file:py-2.5 file:px-4
+                                      file:rounded-xl file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-blue-50 file:text-blue-700
+                                      dark:file:bg-blue-900/30 dark:file:text-blue-400
+                                      hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50
+                                      transition-all cursor-pointer border border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-4 bg-gray-50 dark:bg-gray-800"
+                                />
+                            </div>
+
+                            <AnimatePresence mode="popLayout">
+                                {images.map((url, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                        className="flex gap-4 items-start"
+                                    >
+                                        <div className="flex-1">
+                                            <input
+                                                {...register(`images.${index}` as const)}
+                                                type="url"
+                                                placeholder="https://example.com/image.jpg"
+                                                className="w-full rounded-lg border-gray-300 bg-gray-50 dark:bg-gray-900 dark:border-gray-600 dark:text-gray-400 px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                                                readOnly
+                                            />
+                                            {errors?.images?.[index] && (
+                                                <p className="text-red-500 text-xs mt-1">{errors.images[index]?.message}</p>
+                                            )}
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index)}
+                                            className="p-2.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                                            title="Remove Image"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                            
+                            {images.length === 0 && (
+                                <div className="text-center p-8 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">No images tracked in form yet. Upload images above.</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Image Preview Gallery */}
+                        {watch('images') && watch('images').filter(url => url.length > 0).length > 0 && (
+                            <div className="mt-6">
+                                <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Live Preview</h4>
+                                <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+                                    {watch('images').map((url, idx) => url ? (
+                                        <div key={idx} className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 snap-center">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src={url}
+                                                alt={`Preview ${idx + 1}`}
+                                                className="object-cover w-full h-full"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Invalid+URL';
+                                                }}
+                                            />
+                                        </div>
+                                    ) : null)}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="pt-4">

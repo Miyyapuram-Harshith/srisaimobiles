@@ -1,8 +1,34 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Search, Loader2, Package, Truck, ChevronDown, ChevronUp, CheckCircle2, User, MapPin, Send } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Search, Loader2, Package, Truck, ChevronDown, ChevronUp, CheckCircle2, User, MapPin, Send, Download } from "lucide-react";
 import { toast } from "sonner";
+
+function ExportButton({ type, label }: { type: string; label: string }) {
+    const [loading, setLoading] = useState(false);
+    const handleExport = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/export?type=${type}`);
+            if (!res.ok) throw new Error('Export failed');
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${type}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+        } catch { toast.error('Export failed.'); }
+        finally { setLoading(false); }
+    };
+    return (
+        <button onClick={handleExport} disabled={loading}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-lg font-medium transition-all text-sm disabled:opacity-60">
+            {loading ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
+            {loading ? 'Exporting…' : label}
+        </button>
+    );
+}
 
 interface Order {
     id: string;
@@ -85,6 +111,10 @@ export default function OrdersDashboard() {
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Fulfillment Hub</h1>
                     <p className="text-sm text-zinc-500 mt-1">Process shipments and attach tracking IDs.</p>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                    <ExportButton type="orders" label="Export Orders" />
+                    <ExportButton type="inventory" label="Export Inventory" />
                 </div>
             </div>
 

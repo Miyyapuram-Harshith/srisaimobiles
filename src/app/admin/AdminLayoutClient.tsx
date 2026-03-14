@@ -39,8 +39,13 @@ export default function AdminLayoutClient({ children, role }: { children: ReactN
     const SidebarContent = () => (
         <>
             <div className="p-6">
-                <h1 className="text-xl font-bold tracking-tight">Sri Sai Mobiles</h1>
-                <p className="text-xs text-zinc-500 mt-1 font-medium tracking-wide uppercase">Admin Portal</p>
+                <div className="flex items-center gap-2 mb-1 group">
+                    <img src="/logo.png" alt="SriSaiMobiles Logo" className="h-8 w-auto mix-blend-multiply dark:mix-blend-normal group-hover:drop-shadow-md transition-all duration-300" />
+                    <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
+                        Sri Sai Mobiles
+                    </h1>
+                </div>
+                <p className="text-xs text-zinc-500 mt-1 font-medium tracking-wide uppercase px-1">Admin Portal</p>
             </div>
 
             <nav className="flex-1 px-4 space-y-1 overflow-y-auto">

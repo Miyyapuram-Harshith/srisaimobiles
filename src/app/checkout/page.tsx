@@ -77,12 +77,42 @@ export default function CheckoutPage() {
         );
     };
 
+    const [summaryOpen, setSummaryOpen] = useState(false);
+
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-6 sm:py-12 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-5xl mx-auto">
                 <div className="flex items-center justify-center mb-10 opacity-60">
                     <Lock className="w-4 h-4 mr-2" />
                     <span className="text-sm font-medium tracking-wide uppercase">Secure Checkout</span>
+                </div>
+
+                {/* Mobile Order Summary (collapsed by default) */}
+                <div className="lg:hidden mb-4">
+                    <button
+                        onClick={() => setSummaryOpen(!summaryOpen)}
+                        className="w-full flex items-center justify-between p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm"
+                    >
+                        <span className="font-semibold text-zinc-900 dark:text-white text-sm">Order Summary — ₹45,999</span>
+                        <ChevronDown className={`w-4 h-4 text-zinc-500 transition-transform duration-200 ${summaryOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {summaryOpen && (
+                        <div className="mt-2 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4 shadow-sm">
+                            <div className="flex gap-3 mb-3">
+                                <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center text-xl flex-shrink-0">📱</div>
+                                <div><p className="font-medium text-zinc-900 dark:text-white text-sm leading-tight">iPhone 15 Pro Max</p>
+                                    <p className="text-xs text-zinc-500 mt-0.5">Natural Titanium, 256GB</p>
+                                    <p className="font-bold text-zinc-900 dark:text-white mt-1 text-sm">₹45,499</p>
+                                </div>
+                            </div>
+                            <div className="border-t border-zinc-100 dark:border-zinc-800 pt-3 space-y-1.5">
+                                <div className="flex justify-between text-xs text-zinc-500"><span>Subtotal</span><span>₹45,499</span></div>
+                                <div className="flex justify-between text-xs"><span className="text-zinc-500">Shipping</span><span className="text-emerald-600 font-medium">Free</span></div>
+                                <div className="flex justify-between text-xs text-zinc-500"><span>Taxes</span><span>₹500</span></div>
+                                <div className="flex justify-between font-bold text-zinc-900 dark:text-white pt-1 border-t border-zinc-100 dark:border-zinc-800"><span>Total</span><span>₹45,999</span></div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8">
