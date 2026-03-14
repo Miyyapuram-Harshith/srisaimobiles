@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import * as XLSX from 'xlsx';
-import { getDb } from '@/lib/db';
+
 
 // ── Supabase client for Supabase-backed data ─────────────────────────────────
 const supabase = createClient(
