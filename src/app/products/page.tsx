@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
-import { ArrowLeft, Search, SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
 interface Product {
@@ -17,10 +17,9 @@ interface Product {
     category: string;
 }
 
-export default function AllProductsPage() {
+function ProductsContent() {
     const searchParams = useSearchParams();
     const initialQuery = searchParams.get('q') || '';
-
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [query, setQuery] = useState(initialQuery);
@@ -43,7 +42,6 @@ export default function AllProductsPage() {
         fetchProducts();
     }, []);
 
-    // Sync query from URL search param
     useEffect(() => {
         const q = searchParams.get('q') || '';
         setQuery(q);
@@ -65,8 +63,6 @@ export default function AllProductsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50/50 dark:bg-gray-950 pb-4">
-
-            {/* Header */}
             <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 px-3 py-3">
                 <div className="max-w-7xl mx-auto flex items-center gap-2">
                     <Link href="/" className="p-2 -ml-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors flex-shrink-0 active:scale-90">
@@ -84,8 +80,6 @@ export default function AllProductsPage() {
                     </form>
                 </div>
             </nav>
-
-            {/* Main Grid */}
             <main className="max-w-7xl mx-auto px-3 pt-4">
                 <div className="mb-4 flex items-center justify-between">
                     <h1 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -95,7 +89,6 @@ export default function AllProductsPage() {
                         {isLoading ? '...' : `${filtered.length} Items`}
                     </span>
                 </div>
-
                 {isLoading ? (
                     <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         {[...Array(8)].map((_, i) => (
@@ -137,5 +130,17 @@ export default function AllProductsPage() {
                 )}
             </main>
         </div>
+    );
+}
+
+export default function AllProductsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-gray-500">Loading...</div>
+            </div>
+        }>
+            <ProductsContent />
+        </Suspense>
     );
 }
