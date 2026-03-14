@@ -1,11 +1,11 @@
-import fs from 'fs/promises';
-import path from 'path';
+// db.ts — Supabase only, no local file system
+import { createClient } from '@supabase/supabase-js';
 
-// Define paths to database
-const dataDir = path.join(process.cwd(), 'data');
-const dbPath = path.join(dataDir, 'db.json');
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
 
-// Types based on the user's requirements
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
 export interface Product {
     id: string;
     title: string;
@@ -30,21 +30,18 @@ export interface Order {
     createdAt: string;
 }
 
-interface DatabaseStructure {
-    products: Product[];
-    orders: Order[];
+export async function getDb() {
+    const [{ data: products }, { data: orders }] = await Promise.all([
+        supabase.from('products').select('*'),
+        supabase.from('orders').select('*'),
+    ]);
+    return {
+        products: products || [],
+        orders: orders || [],
+    };
 }
 
-export async function getDb(): Promise<DatabaseStructure> {
-    try {
-        const data = await fs.readFile(dbPath, 'utf-8');
-        return JSON.parse(data) as DatabaseStructure;
-    } catch (error) {
-        // Return empty state if file missing or corrupted
-        return { products: [], orders: [] };
-    }
-}
-
-export async function saveDb(data: DatabaseStructure): Promise<void> {
-    await fs.writeFile(dbPath, JSON.stringify(data, null, 2), 'utf-8');
+export async function saveDb() {
+    // No-op: all saves go directly via supabase client
+    console.warn('saveDb() is deprecated. Use supabase directly.');
 }

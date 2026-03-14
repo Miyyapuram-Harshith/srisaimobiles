@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getDb, saveDb, Product } from '@/lib/db';
+import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
+
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key'
+);
 
 function requireAdmin(request: Request): boolean {
     const role = request.headers.get('x-user-role');
@@ -19,16 +24,19 @@ const createProductSchema = z.object({
     timeUsed: z.string().max(100).optional(),
 });
 
-// ── GET — public ─────────────────────────────────────────────────────────────
 export async function GET() {
-    const db = await getDb();
-    return NextResponse.json(db.products);
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('is_available', true)
+        .order('created_at', { ascending: false });
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(data || []);
 }
 
-// ── POST — admin only ─────────────────────────────────────────────────────────
 export async function POST(request: Request) {
     if (!requireAdmin(request)) {
-        return NextResponse.json({ error: 'Unauthorized: Admin access required' }, { status: 401 });
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     try {
         const body = await request.json();
@@ -36,25 +44,25 @@ export async function POST(request: Request) {
         if (!result.success) {
             return NextResponse.json({ error: 'Invalid input', details: result.error.flatten() }, { status: 400 });
         }
-        const db = await getDb();
-        const newProduct: Product = {
-            id: `prod_${Date.now()}`,
-            createdAt: new Date().toISOString(),
-            title: result.data.title,
+        const { data, error } = await supabase.from('products').insert({
+            name: result.data.title,
+            brand: 'Unknown',
+            category: 'Smartphone',
+            condition: result.data.condition,
             price: result.data.price,
-            storage: result.data.storage ?? '',
-            condition: result.data.condition ?? 'Used',
-            batteryHealth: result.data.batteryHealth ?? '',
-            images: result.data.images ?? [],
-            description: result.data.description ?? '',
-            isSold: result.data.isSold ?? false,
-            timeUsed: result.data.timeUsed,
-        };
-        db.products.push(newProduct);
-        await saveDb(db);
-        return NextResponse.json(newProduct, { status: 201 });
+            stock_quantity: result.data.isSold ? 0 : 1,
+            is_available: !result.data.isSold,
+            images: result.data.images,
+            description: result.data.description,
+            specifications: {
+                storage: result.data.storage,
+                battery_health: result.data.batteryHealth,
+                time_used: result.data.timeUsed,
+            },
+        }).select().single();
+        if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json(data, { status: 201 });
     } catch (error) {
-        console.error('[ERROR] Create product:', error);
         return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
     }
 }
